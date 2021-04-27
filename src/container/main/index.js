@@ -2,12 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from './styles';
-import { mainAction, mainSelect } from '../../redux';
+import { mainAction, mainSelect, userSelect } from '../../redux';
 
 class Main extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
+    token: PropTypes.string.isRequired,
+    history: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -15,11 +17,14 @@ class Main extends React.Component {
     this.state = {};
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // 判断是否登陆
-
-  };
-  
+    const { token, history } = this.props;
+    if (token === undefined || token === '') {
+      // 重定向到登陆
+      history.replace({ pathname: '/login' });
+    }
+  }
 
   apiTest = () => {
     this.props.dispatch(mainAction.actionApiTest());
@@ -37,13 +42,15 @@ class Main extends React.Component {
         <button
           onClick={() => {
             this.apiTest();
-          }}>
+          }}
+        >
           网络接口请求
         </button>
         <button
           onClick={() => {
             this.localTest();
-          }}>
+          }}
+        >
           本地redux
         </button>
       </div>
@@ -52,7 +59,6 @@ class Main extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  token: 
-  data: mainSelect.dataSelect(state),
+  token: userSelect.tokenSelect(state)
 });
 export default connect(mapStateToProps)(Main);
