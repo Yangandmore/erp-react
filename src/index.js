@@ -5,6 +5,7 @@ import App from './routers';
 import reportWebVitals from './reportWebVitals';
 import configureStore from './store';
 import { Provider } from 'react-redux';
+import 'antd/dist/antd.css';
 
 const store = configureStore();
 

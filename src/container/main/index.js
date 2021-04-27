@@ -15,6 +15,12 @@ class Main extends React.Component {
     this.state = {};
   }
 
+  componentWillMount() {
+    // 判断是否登陆
+
+  };
+  
+
   apiTest = () => {
     this.props.dispatch(mainAction.actionApiTest());
   };
@@ -46,6 +52,7 @@ class Main extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  token: 
   data: mainSelect.dataSelect(state),
 });
 export default connect(mapStateToProps)(Main);
