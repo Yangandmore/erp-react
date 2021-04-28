@@ -3,11 +3,11 @@ import {
   createActionAsync,
   createReducer,
 } from 'redux-act-reducer';
-import { fromJS } from 'immutable';
+import { Map } from 'immutable';
 import { createSelector } from 'reselect';
 import { testApi } from './api';
 
-const defaultState = fromJS({
+const defaultState = Map({
   data: {},
   apiData: {},
 });
@@ -39,7 +39,7 @@ const mainReducer = createReducer(
         },
         FAILURE() {
           return state.merge({
-            apiData: fromJS({}),
+            apiData: {},
           });
         },
       };

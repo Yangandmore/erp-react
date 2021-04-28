@@ -51,6 +51,7 @@
         "no-case-declarations": 1,
         "guard-for-in": 1,
         "react/react-in-jsx-scope": 0,
+        "no-empty": 1,
     },
     "globals": {
       "window": true

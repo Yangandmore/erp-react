@@ -7,9 +7,9 @@ import { mainAction, mainSelect, userSelect } from '../../redux';
 class Main extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
     data: PropTypes.object.isRequired,
     token: PropTypes.string.isRequired,
-    history: PropTypes.object.isRequired,
   };
 
   constructor(props) {

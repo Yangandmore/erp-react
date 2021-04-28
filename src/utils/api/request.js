@@ -129,9 +129,13 @@ const request = ({ url, ...options }) => {
       })
       .then((data) => {
         // TODO 需要判断网络状态
-        resolve({ body: data, parameter: opts.body });
+        if (data.status === 0) {
+          resolve({ body: data, parameter: opts.body });
+        } else {
+          reject({ errbody: { errcode: -1, errmsg: data.msg }, parameter: opts.body });
+        }
       })
-      .catch((err) => reject({ errcode: -1, errmsg: `${err}` }));
+      .catch((err) => reject({ errbody: { errcode: -1, errmsg: `${err}` }, parameter: opts.body }));
   });
 };
 

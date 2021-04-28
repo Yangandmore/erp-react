@@ -12,7 +12,7 @@ let engine = createEngine('data');
 // 白名单
 // 黑名单
 // 多层数组表示嵌套
-engine = filter(engine, ['whitelisted-key', ['main']], ['blacklisted-key', []]);
+engine = filter(engine, ['whitelisted-key', ['main'], ['user']], ['blacklisted-key', ['user', 'loadSign']]);
 
 const configureStore = (initialState = fromJS({})) => {
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
