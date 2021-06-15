@@ -1,3 +1,4 @@
 import { request } from './api';
+import { setToken, getToken, getUserId } from './auth';
 
-export { request };
+export { request, setToken, getToken, getUserId };

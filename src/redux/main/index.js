@@ -1,3 +1,6 @@
+/*
+ * 主要部分
+ */
 import {
   createAction,
   createActionAsync,

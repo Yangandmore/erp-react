@@ -88,7 +88,7 @@ const request = ({ url, ...options }) => {
   }
 
   return new Promise((resolve, reject) => {
-    let res = {};
+    let token;
     fetch(requestUrl, {
       method,
       headers,
@@ -97,10 +97,6 @@ const request = ({ url, ...options }) => {
       mode,
     })
       .then((response) => {
-        res = {
-          status: response.status,
-          statusText: response.statusText,
-        };
         let data = {};
         if (response.status !== 204) {
           switch (type.toLowerCase()) {
@@ -125,12 +121,19 @@ const request = ({ url, ...options }) => {
               break;
           }
         }
+        // 处理token
+        if (response.headers.has('token')) {
+          token = response.headers.get('token');
+        }
         return data;
       })
       .then((data) => {
-        // TODO 需要判断网络状态
+        // TODO 需要判断网络状态, 如果网络异常则需要登出?
         if (data.status === 0) {
-          resolve({ body: data, parameter: opts.body });
+          resolve({ body: data, parameter: opts.body, token });
+        } else if (data.status === -2) {
+          // token超时操作
+          resolve({ body: data, parameter: opts.body, token });
         } else {
           reject({ errbody: { errcode: -1, errmsg: data.msg }, parameter: opts.body });
         }

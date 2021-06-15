@@ -12,30 +12,51 @@ let engine = createEngine('data');
 // 白名单
 // 黑名单
 // 多层数组表示嵌套
-engine = filter(engine, ['whitelisted-key', ['main'], ['user']], ['blacklisted-key', ['user', 'loadSign']]);
+engine = filter(engine,
+  ['whitelisted-key', ['main'], ['user'], ['token'], ['role'], ['dir']],
+  ['blacklisted-key', ['user', 'loadSign'], ['user', 'loadLogin'], ['user', 'loadUser'], ['role', 'loadRole'], ['dir', 'loadDirList']]);
+
+const getState = async () => {
+  const a = await new Promise((resolve) => {
+    engine.load()
+      .then((state) => {
+        console.log(state);
+        resolve(state);
+      })
+      .catch(() => resolve({}));
+  });
+  return a;
+};
+
+const getLocalState = () => engine.load()
+  .then((state) => state)
+  .catch(() => ({}));
 
 const configureStore = (initialState = fromJS({})) => {
+  // const a = await getState();
+
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     || window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__();
 
   const reducer = storage.reducer(rootReducer, merger);
   const middleware = storage.createMiddleware(engine);
+
   const store = createStore(
     reducer,
     initialState,
     composeEnhancers(applyMiddleware(thunk, middleware)),
   );
 
-  // 加载localstorage中数据
   const load = storage.createLoader(engine);
   load(store);
 
   return store;
 };
 
-const getLoad = async (store) => {
-  const load = storage.createLoader(engine);
-  await load(store);
+const configureLocalStateStore = async () => {
+  const state = await getLocalState();
+  const store = configureStore(fromJS(state));
+  return store;
 };
 
-export default configureStore;
+export { configureStore, configureLocalStateStore };
